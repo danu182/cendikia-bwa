@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\BookStatus;
+use App\Enums\BookLanguage;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Book extends Model
+{
+    protected $fillable=[
+
+            'title',
+            'slug',
+            'avatar',
+            'publicatoin_year',
+            'isbn',
+            'language',
+            'synopsis',
+            'number_of_pages',
+            'status',
+            'cover',
+            'price',
+            'category_id',
+            'publisher_id',
+
+    ];
+
+
+    protected function casts(): array
+    {
+        return [
+            'language' => BookLanguage::class,
+            'status' => BookStatus::class,
+
+        ];
+    }
+
+
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+
+    public function stock(): HasOne
+    {
+        return $this->hasOne(Stock::class);
+    }
+
+
+
+    public function loan(): HasMany
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+
+
+    public function publisher(): BelongsTo
+    {
+        return $this->belongsTo(Publisher::class);
+    }
+
+}
